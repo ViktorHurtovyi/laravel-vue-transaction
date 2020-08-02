@@ -2,39 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionRequest;
+use App\services\TransactionService;
 use App\Transactions;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
-    return Transactions::all();
+    $service = new TransactionService();
+    return $service->get($request);
   }
 
   public function show($id)
   {
-    return Transactions::findOrFail($id);
+    return Transactions::with('user')->with('notes')->findOrFail($id);
   }
 
-  public function update(Request $request, $id)
+  public function update(TransactionRequest $request, $id)
   {
-    $transaction = Transactions::findOrFail($id);
-    $transaction->update($request->all());
-
-    return $transaction;
+    $service = new TransactionService();
+    return $service->update($request, $id);
   }
 
-  public function store(Request $request)
+  public function store(TransactionRequest $request)
   {
-    $transaction = Transactions::create($request->all());
-    return $transaction;
+    $service = new TransactionService();
+    return $service->create($request);
   }
 
   public function destroy($id)
   {
-    $transaction = Transactions::findOrFail($id);
-    $transaction->delete();
-    return '';
+    $service = new TransactionService();
+    return $service->delete($id);
   }
 }

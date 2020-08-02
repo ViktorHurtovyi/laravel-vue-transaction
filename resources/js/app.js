@@ -4,7 +4,15 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
 require('./bootstrap');
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import TransactionList from "./components/transaction/TransactionList";
+import Form from './components/transaction/Form'
+import Transaction from './components/transaction/Transaction'
+
+Vue.use(VueRouter)
 
 window.Vue = require('vue');
 
@@ -19,7 +27,32 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+const router = new VueRouter({
+    mode: 'hash',
+    routes: [
+        {
+            path: '/',
+            name: 'transactions',
+            component: TransactionList
+        },
+        {
+            path: '#/transactions/:transactionId',
+            name: 'transactionShow',
+            component: Transaction
+        },
+        {
+            path: '#/transactions/edit/:transactionId',
+            name: 'transactionEdit',
+            component: Form
+        },
+        {
+            path: '#/transactions/add',
+            name: 'transactionsCreate',
+            component: Form
+        },
+
+    ],
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,4 +62,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    components: { VueRouter },
+    router,
 });

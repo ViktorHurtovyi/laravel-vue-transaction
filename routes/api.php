@@ -14,7 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:sanctum'], function() {
+  Route::get('/get-user', 'UserController@getCurrentUserRole')->name('transaction');
+  Route::get('/transaction', 'TransactionController@index')->name('transaction');
+  Route::get('/transaction/{transaction}', 'TransactionController@show')->name('transaction.view');
+  Route::group(['middleware' => 'admin'], function() {
+    Route::delete('/transaction/delete/{id}', 'TransactionController@destroy')->name('transaction');
+    Route::post('/transaction/{transaction}', 'TransactionController@update')->name('transaction.update');
+    Route::post('/transaction', 'TransactionController@store')->name('transaction.create');
+  });
 });
-Route::get('/tra', 'TransactionController@index')->name('transaction')->middleware('auth:api');
