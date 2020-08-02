@@ -12,9 +12,7 @@ class TransactionService
 {
   public function get(Request $request): Collection
   {
-    if(\Auth::user()->role != 'admin')
-      return $this->search($request->get('search'))->where('user_id', \Auth::user()->id)->get();
-    return $this->search($request->get('search'))->orderBy('id', 'desc')->get();
+    return $this->search($request->get('search'));
   }
   public function update($request, $id){
     $transaction = Transactions::findOrFail($id);
@@ -28,15 +26,25 @@ class TransactionService
       'user_id' => \Auth::user()->id
     ]);
   }
-  public function delete($id){
+  public function delete($id): string
+  {
     $transaction = Transactions::findOrFail($id);
     $transaction->delete();
     return 'success';
   }
-  public function search($query = null)
+  public function search($query = null): Collection
   {
-    $transactions = Transactions::query()
-      ->with('user');
-      return $query?$transactions->where('amount', '=', "$query"):$transactions;
+    if (!isset($query)){
+      $transactions = Transactions::orderBy('id', 'desc')->get();
+    }elseif(is_numeric($query)){
+      $query = $query*100;
+      $transactions = Transactions::where('amount', '=', "$query")->orderBy('id', 'desc')->get();
+    }else{
+      $transactions = Transactions::orderBy('id', 'desc')->get()
+        ->filter(function($transaction) use ($query) {
+          return $transaction->userName === $query || $transaction->lastNoteTitle === $query;
+        });;
+    }
+    return $transactions;
   }
 }

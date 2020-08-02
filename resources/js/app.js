@@ -3,6 +3,7 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import User from "./components/user/User";
 
 
 require('./bootstrap');
@@ -11,6 +12,7 @@ import VueRouter from 'vue-router'
 import TransactionList from "./components/transaction/TransactionList";
 import Form from './components/transaction/Form'
 import Transaction from './components/transaction/Transaction'
+import UserList from "./components/user/UserList";
 
 Vue.use(VueRouter)
 
@@ -49,6 +51,16 @@ const router = new VueRouter({
             path: '#/transactions/add',
             name: 'transactionsCreate',
             component: Form
+        },
+        {
+            path: '#/users',
+            name: 'users',
+            component: UserList
+        },
+        {
+            path: '#/user/:userId',
+            name: 'userShow',
+            component: User
         },
 
     ],

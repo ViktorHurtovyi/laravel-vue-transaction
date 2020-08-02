@@ -17,8 +17,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role'
     ];
+
+  protected $appends = ['balance', 'transactionCount'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -41,5 +43,17 @@ class User extends Authenticatable
   public function notes()
   {
     return $this->morphMany(Notes::class, 'noteable');
+  }
+  public function transactions(){
+    return $this->hasMany(Transactions::class);
+  }
+  public function getBalanceAttribute(){
+    return $this->getTransactionBalance('debit')  - $this->getTransactionBalance('credit');
+  }
+  private function getTransactionBalance($type){
+    return Transactions::where('user_id', $this->id)->where('transactions.type', '=', $type)->get()->sum('amount');
+  }
+  public function getTransactionCountAttribute(){
+    return $this->transactions()->count();
   }
 }

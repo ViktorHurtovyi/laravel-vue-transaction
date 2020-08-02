@@ -9,22 +9,20 @@
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">User</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Last Note</th>
+                            <th scope="col">Transaction Count</th>
+                            <th scope="col">Balance</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td>
-                                <router-link :to="{ name: 'transactionShow', 'params': {'transactionId':transaction.id} }">
-                                    {{transaction.id}}
+                                <router-link :to="{ name: 'userShow', 'params': {'userId':user.id} }">
+                                    {{user.id}}
                                 </router-link>
                             </td>
                             <td>{{user.name}}</td>
-                            <td>{{transaction.amount/100}}</td>
-                            <td>{{transaction.type}}</td>
-                            <td>{{note.title}}</td>
+                            <td>{{user.transactionCount}}</td>
+                            <td>{{user.balance/100}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -33,7 +31,7 @@
                         <div>{{note.description}}</div>
                         <hr>
                     </div>
-                    <NoteStore :noteable-id="transaction.id" noteable-type="transaction" />
+                    <NoteStore :noteable-id="user.id" noteable-type="user" />
                 </div>
             </div>
         </div>
@@ -47,10 +45,9 @@
     data() {
       return {
         role: '',
-        transaction: [],
         user: {},
         note: {},
-        notes: []
+        notes: [],
       };
     },
     mounted() {
@@ -58,9 +55,8 @@
     },
     methods:{
       getData(){
-        axios.get(`/api/transaction/${this.$route.params.transactionId}`).then((response) => {
-          this.transaction = response.data;
-          this.user = response.data.user;
+        axios.get(`/api/user/${this.$route.params.userId}`).then((response) => {
+          this.user = response.data;
           this.notes = response.data.notes
           this.note = response.data.notes[0]?response.data.notes[0]:{};
         });

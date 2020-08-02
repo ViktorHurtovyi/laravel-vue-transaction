@@ -22,5 +22,9 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::delete('/transaction/delete/{id}', 'TransactionController@destroy')->name('transaction');
     Route::post('/transaction/{transaction}', 'TransactionController@update')->name('transaction.update');
     Route::post('/transaction', 'TransactionController@store')->name('transaction.create');
+
+    Route::get('/users', 'UserController@index')->name('transaction');
+    Route::get('/user/{user}', 'UserController@show')->name('transaction');
   });
+  Route::post('/notes', 'NoteController@store')->name('transaction.create');
 });
