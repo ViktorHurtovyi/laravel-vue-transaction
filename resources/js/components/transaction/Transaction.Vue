@@ -2,6 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
+                <Nav />
                 <div class="card">
                     <h2 class="card-header">Transactions</h2>
                     <table class="table table-bordered text-center">
@@ -42,8 +43,9 @@
 
 <script>
   import NoteStore from '../note/Form'
+  import Nav from "../nav/Nav";
   export default {
-    components: {NoteStore},
+    components: {NoteStore, Nav},
     data() {
       return {
         role: '',

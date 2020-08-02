@@ -3,20 +3,13 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
 
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                       <span class="navbar-brand"><router-link :to="{ name: 'transactions' }">
-                        Transactions
-                    </router-link></span>
-                    <span class="navbar-brand"><router-link :to="{ name: 'users' }">
-                        Users
-                    </router-link></span>
-                </nav>
+                <Nav/>
 
                 <h2 class="text-center">Search</h2>
                 <input v-model="search" type="text" v-on:keyup="getData" class="form-input col-12 m-2">
                 <div class="card">
                     <div class="m-2">
-                    <span class="h4">Users</span>
+                        <span class="h4">Users</span>
                     </div>
                     <table class="table table-bordered text-center">
                         <thead>
@@ -49,7 +42,10 @@
 
 <script>
 
+  import Nav from "../nav/Nav";
+
   export default {
+    components: {Nav},
     data() {
       return {
         users: [],
@@ -59,8 +55,8 @@
     mounted() {
       this.getData();
     },
-    methods:{
-      getData(){
+    methods: {
+      getData() {
         axios.get(`/api/users?search=${this.search}`).then((response) => {
           this.users = response.data;
         });

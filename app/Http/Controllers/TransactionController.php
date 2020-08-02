@@ -21,7 +21,7 @@ class TransactionController extends Controller
     return Transactions::with('user')->with('notes')->findOrFail($id);
   }
 
-  public function update(TransactionRequest $request, $id): Collection
+  public function update(TransactionRequest $request, $id)
   {
     $service = new TransactionService();
     return $service->update($request, $id);

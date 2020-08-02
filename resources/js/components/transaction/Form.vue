@@ -1,13 +1,17 @@
 <template>
     <div class="container">
+        <Nav/>
+        <hr>
         <h2 v-if="error" class="text-danger">Something went wrong</h2>
         <div class="form-group">
             <label for="amount">Amount</label>
-            <input min="1" v-model="amount" type="number" class="form-control" id="amount" aria-describedby="emailHelp" placeholder="amount">
+            <input min="1" v-model="amount" type="number" class="form-control" id="amount" aria-describedby="emailHelp"
+                   placeholder="amount">
         </div>
         <div class="form-group">
             <label for="amount">Type</label>
-            <select :value="type" v-model="type" type="number" class="form-control" id="type" aria-describedby="emailHelp">
+            <select :value="type" v-model="type" type="number" class="form-control" id="type"
+                    aria-describedby="emailHelp">
                 <option :selected="type === 'debit'" value="debit">debit</option>
                 <option :selected="type === 'credit'" value="credit">credit</option>
             </select>
@@ -17,7 +21,10 @@
 </template>
 
 <script>
+  import Nav from "../nav/Nav";
+
   export default {
+    components: {Nav},
     data() {
       return {
         role: '',
@@ -27,21 +34,21 @@
       };
     },
     mounted() {
-      if(this.$route.params.transactionId)
-          this.getData();
+      if (this.$route.params.transactionId)
+        this.getData();
     },
-    methods:{
-      getData(){
+    methods: {
+      getData() {
         axios.get(`/api/transaction/${this.$route.params.transactionId}`).then((response) => {
-          this.amount = response.data.amount
+          this.amount = response.data.amount/100
           this.type = response.data.type
         });
       },
-      submitForm(){
-        const link = this.$route.params.transactionId?`/api/transaction/${this.$route.params.transactionId}`:`/api/transaction`
+      submitForm() {
+        const link = this.$route.params.transactionId ? `/api/transaction/${this.$route.params.transactionId}` : `/api/transaction`
         axios.post(link, {
-          'amount':this.amount,
-          'type':this.type
+          'amount': this.amount*100,
+          'type': this.type
         })
           .then((response) => {
             this.$router.push('/')

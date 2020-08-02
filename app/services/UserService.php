@@ -14,16 +14,16 @@ class UserService
     return $this->search($request->get('search'));
   }
 
-  public function search($query = null):Collection
+  public function search($query = null): Collection
   {
-    if (!isset($query)){
+    if (!isset($query)) {
       $users = User::where('role', 'customer')->orderBy('id', 'desc')->get();
-    }elseif(is_numeric($query)){
-      $query = $query*100;
-      $users = User::where('role', 'customer')->get()->filter(function($user) use ($query) {
+    } elseif (is_numeric($query)) {
+      $query = $query * 100;
+      $users = User::where('role', 'customer')->get()->filter(function ($user) use ($query) {
         return $user->balance === (int)$query;
       });
-    }else{
+    } else {
       $users = User::where('role', 'customer')->where('name', 'like', "{$query}%")->get();
     }
     return $users;

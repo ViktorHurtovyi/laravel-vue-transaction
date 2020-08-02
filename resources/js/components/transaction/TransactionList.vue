@@ -2,25 +2,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-
-                <nav v-if="role==='admin'" class="navbar navbar-expand-lg navbar-light bg-light">
-                       <span class="navbar-brand"><router-link :to="{ name: 'transactions' }">
-                        Transactions
-                    </router-link></span>
-                    <span class="navbar-brand"><router-link :to="{ name: 'users' }">
-                        Users
-                    </router-link></span>
-                </nav>
-
-
+                <Nav />
                 <h2 class="text-center">Search</h2>
                 <input v-model="search" type="text" v-on:keyup="getData" class="form-input col-12 m-2">
                 <div class="card">
                     <div class="m-2">
                         <span class="h4">Transactions</span>
-                        <router-link :to="{ name: 'transactionsCreate' }">
-                            <button class="btn btn-success float-right">Add</button>
-                        </router-link>
                     </div>
                     <table class="table table-bordered text-center">
                         <thead>
@@ -48,9 +35,9 @@
                             <td v-if="role==='admin'">
                                 <router-link
                                         :to="{ name: 'transactionEdit', 'params': {'transactionId':transaction.id} }">
-                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn-short btn-primary">Edit</button>
                                 </router-link>
-                                <button @click="deleteTransaction(transaction.id)" class="btn btn-primary">Delete
+                                <button @click="deleteTransaction(transaction.id)" class="btn-short btn-primary">Delete
                                 </button>
                             </td>
                         </tr>
@@ -64,12 +51,15 @@
 
 <script>
 
+  import Nav from "../nav/Nav";
+
   export default {
+    components: {Nav},
     data() {
       return {
-        role: '',
         transactions: [],
         search: '',
+        role: ''
       };
     },
     mounted() {

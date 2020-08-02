@@ -9,16 +9,16 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getCurrentUserRole():string
-    {
-      return \Auth::user()->role;
-    }
+  public function getCurrentUserRole(): string
+  {
+    return \Auth::user()->role;
+  }
 
-    public function index(Request $request): Collection
-    {
-      $service = new UserService();
-      return $service->get($request);
-    }
+  public function index(Request $request): Collection
+  {
+    $service = new UserService();
+    return $service->get($request);
+  }
 
   public function show($id)
   {

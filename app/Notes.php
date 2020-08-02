@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notes extends Model
 {
-    protected $guarded = [];
+  protected $guarded = [];
 
-    public function noteable()
-    {
-      return $this->morphTo();
-    }
+  public function noteable()
+  {
+    return $this->morphTo();
+  }
 }
