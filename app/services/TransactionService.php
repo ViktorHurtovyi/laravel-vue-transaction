@@ -5,6 +5,7 @@ namespace App\services;
 
 
 use App\Transactions;
+use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -46,10 +47,12 @@ class TransactionService
       $query = $query * 100;
       $transactions = Transactions::where('amount', '=', "$query")->orderBy('id', 'desc')->get();
     } else {
-      $transactions = Transactions::orderBy('id', 'desc')->get()
-        ->filter(function ($transaction) use ($query) {
-          return $transaction->userName === $query || $transaction->lastNoteTitle === $query;
-        });;
+      $transactions = Transactions::join('users', 'users.id', 'transactions.user_id')
+        ->join('notes', 'noteable_id', 'transactions.id')
+        ->where('notes.noteable_type', User::class)
+        ->where('users.name', 'like', "{$query}%")->select('transactions.*')
+        ->orWhere('notes.title', 'like', "{$query}%")
+        ->orderBy('transactions.id', 'desc')->distinct()->get();
     }
     return $transactions;
   }
