@@ -26,39 +26,36 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 const router = new VueRouter({
     mode: 'hash',
     routes: [
         {
-            path: '/',
+            path: '',
             name: 'transactions',
             component: TransactionList
         },
         {
-            path: '#/transactions/:transactionId',
+            path: '#transactions/:transactionId',
             name: 'transactionShow',
             component: Transaction
         },
         {
-            path: '#/transactions/edit/:transactionId',
+            path: '#transactions/edit/:transactionId',
             name: 'transactionEdit',
             component: Form
         },
         {
-            path: '#/transactions/add',
+            path: '#transactions/add',
             name: 'transactionsCreate',
             component: Form
         },
         {
-            path: '#/users',
+            path: '#users',
             name: 'users',
             component: UserList
         },
         {
-            path: '#/user/:userId',
+            path: '#user/:userId',
             name: 'userShow',
             component: User
         },
